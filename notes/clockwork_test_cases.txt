@@ -1,0 +1,167 @@
+------------------------------------------------------------------------------------------------------------------------
+Test Cases
+------------------------------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Integer Addition: x+y
+--------------------------------------------------------------------------------
+
+# A and B loaded into first two input registers II[0], II[1]
+# Result stored in output register IO[0]
+
+SET 1234  II[0]
+SET 5678  II[1]
+
+IADD II[0] II[1]  IO[0]
+
+byte count:   5 vs 6
+search space: 1080000 vs 3010936384
+
+--------------------------------------------------------------------------------
+Exponential: x^4 - using library
+--------------------------------------------------------------------------------
+
+# x loaded into first input register DI[0]
+# 4 loaded into integer constant register IK[0]
+# Result stored in output register DO[0]
+
+SET 1234.0  DI[0]
+
+POW DI[0] 4.0  DO[0]
+
+byte count: 5 vs 7
+
+--------------------------------------------------------------------------------
+Exponential: x^4.0 - using multiple multiplication instructions
+--------------------------------------------------------------------------------
+
+# x loaded into first input register DI[0]
+# 4.0 loaded into floating point constant register DK[0]
+# Result stored in output register DO[0]
+
+SET 1234.0  DI[0]
+
+DDMOV DI[0]       DS[0]
+DMUL DI[0] DS[0]  DS[0]
+DMUL DI[0] DS[0]  DS[0]
+DMUL DI[0] DS[0]  DO[0]
+
+byte count:     19 vs 7
+search space:   45349632000000000000000 vs 114415582592
+
+--------------------------------------------------------------------------------
+Exponential: x^4 - using loop
+--------------------------------------------------------------------------------
+
+# x loaded into first input register DI[0]
+# 4 loaded into integer constant register IK[0]
+# Result stored in output register DO[0]
+
+SET 1234.0  DI[0]
+
+IMOV 3            IS[0]    # loop counter
+IMOV DI[0]        DS[0]
+
+DMUL DI[0] DS[0]  DS[0]    # loop start
+ISUB IS[0] 1      IS[0]
+IJGT IS[0] 0      -2       # if loop counter > 0, jump back 2 instructions
+
+IMOV DS[0]        DO[0]    # copy final result to output register
+
+byte count:     27 vs 25
+search space:   58773123072000000000000000000000 vs 3123128945369880000000000000000000000000
+
+--------------------------------------------------------------------------------
+Area of Circle of radius r
+--------------------------------------------------------------------------------
+
+# PI loaded into integer constant register IK[0]
+
+SET 1234.0  DI[0]
+
+DMUL DI[0] DI[0]      DS[0]    # r*r
+DMUL DS[0] 3.1415     DO[0]    # r*r*pi
+
+byte count: 10 vs 23
+byte count: 10 vs 18
+
+--------------------------------------------------------------------------------
+Equality test.  Sets IO[0] to 1, if equal. Sets IO[0] to 0, otherwise.
+--------------------------------------------------------------------------------
+
+SET 1234.0  DI[0]
+SET 1234.0  DI[1]
+
+DJEQ DI[0] DI[1]     2
+HLT
+IMOV 1               IO[0]
+
+byte count:     10 vs 24
+
+--------------------------------------------------------------------------------
+Integer test. Sets IO[0] to 1, if x is an integer. Sets IO[0] to 0, otherwise.
+--------------------------------------------------------------------------------
+
+SET 1234.0  DI[0]
+
+ABS DI[0]           DS[0]
+DJEQ DI[0] DS[0]    3
+IMOV 0              IO[0]
+HLT
+IMOV 1              IO[0]    # jump target
+
+byte count:     18 vs 30
+search space:   2015539200000000000000
+            vs  247461646672045000000000000000000000000000000000
+
+--------------------------------------------------------------------------------
+Factorial: n!  For positive integer input and n! less than max register value.
+--------------------------------------------------------------------------------
+
+SET 3  II[0]
+
+IMOV II[0]       IS[0]           # IS[0] is current value of n
+IMOV II[0]       IS[1]           # IS[1] is running product
+
+# start
+IJLT IS[0] 2     4               # n < 2, jump to end
+
+ISUB IS[0] 1     IS[0]           # n = n - 1
+IMUL IS[0] IS[1] IS[1]           # product = product * n
+
+IJEQ 0 0         -3              # unconditional jump
+
+# end
+IMOV IS[1]       IO[0]           # output final value
+
+byte count:     32 vs 32
+search space:   63474972917760000000000000000000000000
+             vs 357334617794434000000000000000000000000000000000000
+
+--------------------------------------------------------------------------------
+Positive / negative classification loop. Outputs 1 if positive, 0 otherwise.
+--------------------------------------------------------------------------------
+
+IMOV 0 DO[0]                     # :start assume negative
+IJLT DI[0] 0  3                  # input < 0 ? jump to :end
+IMOV 1 DO[0]                     # greater than
+SYN                             # :end
+IJEQ 0 0 -4
+
+byte count: 18 vs 21
+search space:   60466176000000000000000
+             vs 1497805872312350000000000000000000
+# note: ignores negative value for jump offset (should be * 20 instead of * 10)
+
+--------------------------------------------------------------------------------
+Output 10 random numbers - indirect addressing example
+--------------------------------------------------------------------------------
+
+RAN 1.0         DO[[0]]         DO[IS[0]] = random() * 1.0
+IADD IS[0] 1     IS[0]           # IS[0] = IS[0] + 1
+IJLT IS[0] 10    -2              # IS[0] < 10, loop
+
+byte count:     15 vs 14
+search space:   41990400000000000
+             vs 13090925539866800000000
+# note: ignores negative value for jump offset (should be * 20 instead of * 10)

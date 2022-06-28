@@ -1,0 +1,35 @@
+------------------------------------------------------------------------------------------------------------------------
+Aims
+------------------------------------------------------------------------------------------------------------------------
+
+1. Reduce the size of the search space as much as possible.
+
+    This is enabled by:
+
+        1.1. Providing a relatively high level set of instructions that operate directly on memory locations, so that
+             equivalent functionality does not have be evolved each time.
+             For example consider the number of steps in the first and second solutions:
+                - load {address x1} into {register r1}
+                - load {address x2} into {register r2}
+                - add {register r1} to {register r2} saving to {register r1}
+                - save {register r1} to {register r3}
+            Versus:
+                - add {address x1} to {address x2} saving to {address x3}
+
+        1.2. Modelling the success probability of each combination of instruction, operand type and addressing mode
+             so that this information can be used to further reduce the size of the search space.
+
+        1.3. Separating inputs, constants, state and outputs:
+
+             1.3.1. Overwriting inputs is probably harmful in most cases.
+             1.3.2. Not making assumptions about when inputs are overwritten or outputs evaluated will lead to more
+                    robust solutions, such as when a solution is deployed to a new environment or a new test case
+                    encountered.
+
+2. Provide a relatively simple instruction format, so that each instruction can be represented and executed with a low
+   branching factor.
+
+3. Provide a useful memory architecture:
+
+        3.1. Some solutions require the use of memory other than a single stack.
+        3.2. Some solutions require state to be kept.

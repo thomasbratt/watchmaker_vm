@@ -1,0 +1,20 @@
+------------------------------------------------------------------------------------------------------------------------
+Architecture
+------------------------------------------------------------------------------------------------------------------------
+
+II: linear array of integer input registers
+IS: linear array of integer state registers
+IO: linear array of integer output registers
+
+DI: linear array of double precision floating point input registers
+DS: linear array of double precision floating point state registers
+DO: linear array of double precision floating point output registers
+
+C: 64 bit instructions code stored in a linear array
+
+All registers are initialized to zero at start up.
+The input registers can be written to at any time.
+The output registers can be read at any time.
+
+Operand addresses are evaluated modulo the size of the register array they refer to, to keep them within the
+allocated memory for that array.

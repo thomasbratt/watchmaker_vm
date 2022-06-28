@@ -1,0 +1,135 @@
+------------------------------------------------------------------------------------------------------------------------
+Assembly Language Instruction Set
+------------------------------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Comments
+--------------------------------------------------------------------------------
+
+Comments start with the '#'' character and can appear at start of line or after any valid instruction.
+
+--------------------------------------------------------------------------------
+VM Initialization
+--------------------------------------------------------------------------------
+
+The VM directive can be used to set the length of the register arrays.
+
+    VM <floating point literal | integer literal> <array>
+
+Examples:
+
+    VM 1  II    # Sets the length of the input array to 1
+    VM 10 I0    # Sets the length of the output array to 10
+
+--------------------------------------------------------------------------------
+Initial values
+--------------------------------------------------------------------------------
+
+The SET directive can be used to initialize the input or constant registers.
+All SET directives must occur before the main instructions.
+
+    SET <floating point literal | integer literal> <address>
+
+Examples:
+
+    SET 1234.0  DI[0]   # Sets first element of DI register array to 1234.0
+
+--------------------------------------------------------------------------------
+Instructions
+--------------------------------------------------------------------------------
+
+All instructions given in the format:
+
+    mnemonic [operand1] [operand2] [->] [operand3]  [# comment]
+
+# no operands required
+NOP                                 # no operation
+HLT                                 # sync and stop
+SYN                                 # sync input and output register arrays with outside environment
+
+IIMOV lint rint                     # Copy the value of lint to rint.
+IDMOV lint rdouble                  # Copy the value of lint to rdouble, converting type.
+DIMOV ldouble rint                  # Copy the value of ldouble to rint, converting type.
+DDMOV ldouble rdouble               # Copy the value of ldouble to rdouble.
+
+IADD lint lint rint                 # lint + lint           -> rint
+IDIV lint lint rint                 # lint / lint           -> rint, divide by zero results in zero
+IMOD lint lint rint                 # lint % lint           -> rint
+IMUL lint lint rint                 # lint * lint           -> rint
+ISUB lint lint rint                 # lint - lint           -> rint
+
+DADD ldouble ldouble rdouble        # lint + lint           -> rint
+DDIV ldouble ldouble rdouble        # lint / lint           -> rint, divide by zero results in zero
+DMOD ldouble ldouble rdouble        # lint % lint           -> rint
+DMUL ldouble ldouble rdouble        # lint * lint           -> rint
+DSUB ldouble ldouble rdouble        # lint - lint           -> rint
+
+# caddr must be a relative instruction offset
+IJEQ lint lint caddr                # if operand1 == operand2, jump to caddr
+IJNE lint lint caddr                # if operand1 != operand2, jump to caddr
+IJGT lint lint caddr                # if operand1 > operand2, jump to caddr
+IJLT lint lint caddr                # if operand1 < operand2, jump to caddr
+
+# caddr must be a relative instruction offset
+DJEQ ldouble ldouble caddr          # if operand1 == operand2, jump to caddr
+DJNE ldouble ldouble caddr          # if operand1 != operand2, jump to caddr
+DJGT ldouble ldouble caddr          # if operand1 > operand2, jump to caddr
+DJLT ldouble ldouble caddr          # if operand1 < operand2, jump to caddr
+
+IMAX lint lint rint                 # max(operand1,operand2) -> rint
+IMIN lint lint rint                 # min(operand1,operand2) -> rint
+
+DMAX ldouble ldouble rdouble        # max(operand1,operand2) -> rdouble
+DMIN ldouble ldouble rdouble        # min(operand1,operand2) -> rdouble
+
+ABS ldouble rdouble               # Math.abs(ldouble)    -> rdouble
+CEI ldouble rdouble               # Math.ceil(ldouble)   -> rdouble
+COS ldouble rdouble               # Math.cos(ldouble)    -> rdouble
+EXP ldouble rdouble               # Math.exp(ldouble)    -> rdouble
+FLR ldouble rdouble               # Math.floor(ldouble)  -> rdouble
+LOG ldouble rdouble               # Math.log(ldouble)    -> rdouble
+POW ldouble ldouble rdouble       # Math.pow(operand1, operand2) -> rdouble
+RAN ldouble rdouble               # Math.random(ldouble) -> rdouble
+SIN ldouble rdouble               # Math.sin(ldouble)    -> rdouble
+SQR ldouble rdouble               # Math.sqrt(ldouble)   -> rdouble
+TAN ldouble rdouble               # Math.tan(ldouble)    -> rdouble
+
+--------------------------------------------------------------------------------
+Annotated Operand Examples
+--------------------------------------------------------------------------------
+
+Constants
+
+    All constants are decimal values of either integer or floating point type, as determined by the presence of a
+    decimal point.
+
+    The type of constant literal must match the required operand types of the instruction.
+
+    Constant literals referred to in an instruction are automatically inserted by the assembler into free locations in
+    the constant registers.
+
+Absolute addressing
+
+    II[7]                                   # the value in the input integer register at the eighth position
+    IO[7]                                   # the value in the output integer register at the eighth position
+    IS[7]                                   # the value in the output integer register at the eighth position
+
+    DI[7]                                   # the value in the input floating point register at the eighth position
+    DO[7]                                   # the value in the output floating point register at the eighth position
+    DS[7]                                   # the value in the output floating point register at the eighth position
+
+Indirect addressing
+
+    II[[7]]                                 # the value in the input integer register at the position contained in the state
+                                            # integer register at the eighth position
+    IO[[7]]                                 # the value in the input integer register at the position contained in the state
+                                            # integer register at the eighth position
+    IS[[7]]                                 # the value in the input integer register at the position contained in the state
+                                            # integer register at the eighth position
+
+    DD[[7]]                                 # the value in the input floating point register at the position contained in
+                                            # the state integer register at the eighth position
+    DO[[7]]                                 # the value in the input floating point register at the position contained in
+                                            # the state integer register at the eighth position
+    DS[[7]]                                 # the value in the input floating point register at the position contained in
+                                            # the state integer register at the eighth position

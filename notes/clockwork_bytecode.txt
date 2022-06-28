@@ -1,0 +1,106 @@
+------------------------------------------------------------------------------------------------------------------------
+Byte code format
+------------------------------------------------------------------------------------------------------------------------
+
+Each instruction consists of 64 bits, divided as follows:
+
+    8 bit opcode     - an integer indicating the instruction type
+    19 bit operand 1 - see below
+    19 bit operand 2 - see below
+    18 bit operand 3 - see below
+
+Operands:
+    for operands 1 and 2 of types: {lint, ldouble}
+        - 1 bit:
+            0: value is a signed 16-bit integer constant; next 3 bits ignored
+            1: value is an address
+        - 1 bit:
+            0: direct addressing
+            1: indirect addressing - value is offset into istate, which contains actual value
+        - 1 bit selecting a register array:
+            lint:
+                0: register array IS
+                1: register array II
+            ldouble:
+                0: register array DS
+                1: register array DI
+        - 16 bit value
+    for operand 3 of types: {rint, rdouble):
+        - 1 bit:
+            0: direct addressing
+            1: indirect addressing - value is offset into istate, which contains actual value
+        - 1 bit selecting a register array:
+            rint:
+                0: register array IS
+                1: register array IO
+            rdouble:
+                0: register array DS
+                1: register array DO
+        - 16 bit value
+    - for operand 3 of type {caddr}:
+        - a relative (signed) 16 bit integer instruction offset
+
+--------------------------------------------------------------------------------
+Instruction Codes
+--------------------------------------------------------------------------------
+
+This section gives the instruction codes, mnemonics and operand types.
+
+Each instruction is stored with 3 operands, not all of which may actually be used by a given instruction.
+
+Each operand has a type, as follows:
+
+    lint:       {IS, II, integer constant}
+    rint:       {IS, IO}
+    ldouble:    {DS, DI, floating point constant}
+    rdouble:    {DS, DO}
+    caddr:      signed integer
+
+0   NOP
+1   HLT
+2   SYN
+
+3   IIMOV lint rint
+4   IDMOV lint rdouble
+5   DIMOV ldouble rint
+6   DDMOV ldouble rdouble
+
+7   IADD lint lint rint
+8   IDIV lint lint rint
+9   IMOD lint lint rint
+10  IMUL lint lint rint
+11  ISUB lint lint rint
+
+12  DADD ldouble ldouble rdouble
+13  DDIV ldouble ldouble rdouble
+14  DMOD ldouble ldouble rdouble
+15  DMUL ldouble ldouble rdouble
+16  DSUB ldouble ldouble rdouble
+
+17  IJEQ lint lint caddr
+18  IJNE lint lint caddr
+19  IJGT lint lint caddr
+20  IJLT lint lint caddr
+
+21  DJEQ ldouble ldouble caddr
+22  DJNE ldouble ldouble caddr
+23  DJGT ldouble ldouble caddr
+24  DJLT ldouble ldouble caddr
+
+25  IMAX lint lint rint
+26  IMIN lint lint rint
+
+27  DMAX ldouble ldouble rdouble
+28  DMIN ldouble ldouble rdouble
+
+29  ABS  ldouble rdouble
+30  CEI  ldouble rdouble
+31  COS  ldouble rdouble
+32  EXP  ldouble rdouble
+33  FLR  ldouble rdouble
+34  LOG  ldouble rdouble
+35  POW  ldouble ldouble rdouble
+36  RAN  ldouble rdouble
+37  SIN  ldouble rdouble
+38  SQR  ldouble rdouble
+39  TAN  ldouble rdouble
