@@ -86,6 +86,19 @@ The following creates an example that executes a factorial function.
     let result = vm.ioutput()[0];
     println!("factorial of {:?} is {:?}", vm.iinput()[0], result);
 ```
+
+The following shows how to create a random list of instructions that can be supplied to a virtual machine instance.
+
+```rust
+        let raw: Vec<u64> = (0..GENOME_SIZE)
+            .into_iter()
+            .map(|_| rand::thread_rng().next_u64())
+            .collect();
+        let instructions: Vec<Instruction> = raw.into_iter()
+            .map(watchmaker_vm::deserialize)
+            .collect();
+```
+
 ## Alternatives
 
 The Genetic Algorithm is a very well known technique and as a result there are many alternative ways of representing and
