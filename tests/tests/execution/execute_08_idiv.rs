@@ -1,7 +1,7 @@
 // Test creation and execution of the virtual machine.
 
 use crate::common::{check_equal_i64, make_test_architecture};
-use clockwork::{Instruction, LeftInteger, Mode, RightInteger, VirtualMachine};
+use watchmaker_vm::{Instruction, LeftInteger, Mode, RightInteger, VirtualMachine};
 
 #[test]
 fn idiv_can_divide_input_values_and_store_result_in_output() {

@@ -1,5 +1,5 @@
 use crate::common::{all_lints, all_rints, check_equal_instruction};
-use clockwork::*;
+use watchmaker_vm::*;
 
 // Test instruction serialization and deserialization.
 #[test]
@@ -9,7 +9,8 @@ fn idiv_roundtrips_all_operands() {
             for rint in all_rints() {
                 let expected = Instruction::IDIV(lint1.clone(), lint2.clone(), rint.clone());
 
-                let actual: Instruction = clockwork::deserialize(clockwork::serialize(&expected));
+                let actual: Instruction =
+                    watchmaker_vm::deserialize(watchmaker_vm::serialize(&expected));
 
                 check_equal_instruction(actual, expected);
             }

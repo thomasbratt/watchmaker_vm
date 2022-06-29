@@ -1,6 +1,6 @@
 # watchmaker_vm
 
-A virtual machine for use with genetic algorithms.
+A virtual machine for use with [genetic algorithms](https://en.wikipedia.org/wiki/Genetic_algorithm).
 
 The virtual machine has an instruction set that is much simpler than real world processors. 
 There are no registers and all operands are memory locations.

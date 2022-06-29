@@ -1,4 +1,4 @@
-use clockwork::*;
+use watchmaker_vm::*;
 
 // Test extraction and display of bits from raw u64 instruction values.
 // TODO: actually assert that output strings match expected values.
@@ -10,7 +10,7 @@ fn extract_nop() {
     println!("instruction    : {:?}", instruction);
     println!(
         "{}",
-        BytecodeDisplay::from(clockwork::serialize(&instruction))
+        BytecodeDisplay::from(watchmaker_vm::serialize(&instruction))
     );
 }
 
@@ -24,7 +24,7 @@ fn extract_idmov() {
     println!("instruction    : {:?}", instruction);
     println!(
         "{}",
-        BytecodeDisplay::from(clockwork::serialize(&instruction))
+        BytecodeDisplay::from(watchmaker_vm::serialize(&instruction))
     );
 }
 
@@ -39,7 +39,7 @@ fn extract_dsub() {
     println!("instruction    : {:?}", instruction);
     println!(
         "{}",
-        BytecodeDisplay::from(clockwork::serialize(&instruction))
+        BytecodeDisplay::from(watchmaker_vm::serialize(&instruction))
     );
 }
 
@@ -53,6 +53,6 @@ fn dump_idmov() {
     println!("instruction    : {:?}", instruction);
     println!(
         "{}",
-        BytecodeDisplay::from(clockwork::serialize(&instruction))
+        BytecodeDisplay::from(watchmaker_vm::serialize(&instruction))
     );
 }

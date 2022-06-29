@@ -1,5 +1,5 @@
 use crate::common::{count_zeroes, make_test_architecture};
-use clockwork::*;
+use watchmaker_vm::*;
 
 #[test]
 fn nop_does_not_affect_memory() {

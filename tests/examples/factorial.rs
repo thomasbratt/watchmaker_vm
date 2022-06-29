@@ -1,5 +1,5 @@
-use clockwork::*;
 use tests::create_factorial_virtual_machine;
+use watchmaker_vm::*;
 
 // Ad hoc example of a simple program.
 pub fn main() {

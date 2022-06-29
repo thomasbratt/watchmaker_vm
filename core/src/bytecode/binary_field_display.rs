@@ -39,9 +39,9 @@ fn make_mask(length: usize) -> u64 {
 
 // TODO: write up in google docs
 // fn dump_original(raw: u64) {
-//     let fields = clockwork::extract_fields(raw);
+//     let fields = watchmaker_vm::extract_fields(raw);
 //     println!();
-//     println!("deserialized    : {:?}", clockwork::deserialize(raw));
+//     println!("deserialized    : {:?}", watchmaker_vm::deserialize(raw));
 //     println!("raw             : {:064b}", fields.raw);
 //     println!("op_code         : {:>07b}", fields.op_code);
 //     println!("operand1    : {:>7}{:>019b}", " ", fields.operand1.raw);

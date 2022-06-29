@@ -1,5 +1,5 @@
 use crate::common::*;
-use clockwork::*;
+use watchmaker_vm::*;
 
 // Test deserialization with some manually calculated bytecode values.
 
@@ -33,9 +33,9 @@ fn deserialize_iimov_direct_small() {
         LeftInteger::State(1, Mode::Direct),
         RightInteger::State(2, Mode::Direct),
     );
-    // let raw = clockwork::serialize(&expected);
+    // let raw = watchmaker_vm::serialize(&expected);
     // eprint!("{}", BytecodeDisplay::from(raw));
-    let actual: Instruction = clockwork::deserialize(0x0740_0068_0010_0000);
+    let actual: Instruction = watchmaker_vm::deserialize(0x0740_0068_0010_0000);
 
     check_equal_instruction(actual, expected);
 }
@@ -49,7 +49,7 @@ fn deserialize_iimov_direct_small() {
 //         0,
 //     );
 //
-//     let actual: Instruction = clockwork::deserialize(raw);
+//     let actual: Instruction = watchmaker_vm::deserialize(raw);
 //     let expected = Instruction::IIMOV(
 //         LeftInteger::State(1, Mode::Indirect),
 //         RightInteger::State(2, Mode::Indirect),
@@ -67,7 +67,7 @@ fn deserialize_iimov_direct_small() {
 //         0,
 //     );
 //
-//     let actual: Instruction = clockwork::deserialize(raw);
+//     let actual: Instruction = watchmaker_vm::deserialize(raw);
 //     let expected = Instruction::IIMOV(
 //         LeftInteger::State(INDEX_MAX, Mode::Direct),
 //         RightInteger::State(INDEX_MAX, Mode::Direct),
@@ -85,7 +85,7 @@ fn deserialize_iimov_direct_small() {
 //         0,
 //     );
 //
-//     let actual: Instruction = clockwork::deserialize(raw);
+//     let actual: Instruction = watchmaker_vm::deserialize(raw);
 //     let expected = Instruction::IIMOV(
 //         LeftInteger::State(INDEX_MAX, Mode::Indirect),
 //         RightInteger::State(INDEX_MAX, Mode::Indirect),

@@ -1,5 +1,5 @@
 use crate::common::{all_code_offsets, all_lints, check_equal_instruction};
-use clockwork::*;
+use watchmaker_vm::*;
 
 // Test instruction serialization and deserialization.
 #[test]
@@ -9,7 +9,8 @@ fn ijgt_roundtrips_all_operands() {
             for code_offset in all_code_offsets() {
                 let expected = Instruction::IJGT(lint1.clone(), lint2.clone(), code_offset);
 
-                let actual: Instruction = clockwork::deserialize(clockwork::serialize(&expected));
+                let actual: Instruction =
+                    watchmaker_vm::deserialize(watchmaker_vm::serialize(&expected));
 
                 check_equal_instruction(actual, expected);
             }

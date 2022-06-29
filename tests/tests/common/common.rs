@@ -1,4 +1,4 @@
-use clockwork::*;
+use watchmaker_vm::*;
 
 // Provide common test functionality.
 

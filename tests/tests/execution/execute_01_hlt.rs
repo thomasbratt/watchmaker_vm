@@ -1,5 +1,5 @@
 use crate::common::{count_zeroes, make_test_architecture};
-use clockwork::{Instruction, VirtualMachine};
+use watchmaker_vm::{Instruction, VirtualMachine};
 
 #[test]
 fn hlt_does_not_affect_memory() {

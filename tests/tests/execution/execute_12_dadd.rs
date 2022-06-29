@@ -1,7 +1,7 @@
 // Test creation and execution of the virtual machine.
 
 use crate::common::{check_equal_f64, make_test_architecture};
-use clockwork::{Instruction, LeftDouble, Mode, RightDouble, VirtualMachine};
+use watchmaker_vm::{Instruction, LeftDouble, Mode, RightDouble, VirtualMachine};
 
 #[test]
 fn dadd_can_add_inputs_and_store_result_in_output() {

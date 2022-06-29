@@ -1,5 +1,5 @@
-use clockwork::*;
 use rand::RngCore;
+use watchmaker_vm::*;
 
 pub fn create_random_virtual_machine(instructions: usize, memory: u16) -> VirtualMachine {
     let architecture = ArchitectureBuilder::default()

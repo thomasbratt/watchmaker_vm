@@ -2,8 +2,8 @@
 
 #[cfg(feature = "fuzzing")]
 mod deserialization {
-    use clockwork::*;
     use rand::RngCore;
+    use watchmaker_vm::*;
 
     #[test]
     fn fuzz_deserialize_opcodes() {

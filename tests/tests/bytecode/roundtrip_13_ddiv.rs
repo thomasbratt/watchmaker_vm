@@ -1,5 +1,5 @@
 use crate::common::{all_ldoubles, all_rdoubles, check_equal_instruction};
-use clockwork::*;
+use watchmaker_vm::*;
 
 // Test instruction serialization and deserialization.
 #[test]
@@ -10,7 +10,8 @@ fn ddiv_roundtrips_all_operands() {
                 let expected =
                     Instruction::DDIV(ldouble1.clone(), ldouble2.clone(), rdouble.clone());
 
-                let actual: Instruction = clockwork::deserialize(clockwork::serialize(&expected));
+                let actual: Instruction =
+                    watchmaker_vm::deserialize(watchmaker_vm::serialize(&expected));
 
                 check_equal_instruction(actual, expected);
             }

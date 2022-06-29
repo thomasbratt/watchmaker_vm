@@ -1,5 +1,5 @@
 use crate::common::*;
-use clockwork::*;
+use watchmaker_vm::*;
 
 #[test]
 fn ddmov_can_copy_from_input_to_output_via_state() {

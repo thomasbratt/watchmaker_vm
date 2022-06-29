@@ -70,13 +70,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "clockwork"
-version = "0.2.0"
-dependencies = [
- "half",
-]
-
-[[package]]
 name = "criterion"
 version = "0.3.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -510,12 +503,12 @@ dependencies = [
 
 [[package]]
 name = "tests"
-version = "2.0.0"
+version = "1.0.0"
 dependencies = [
- "clockwork",
  "criterion",
  "half",
  "rand",
+ "watchmaker_vm",
 ]
 
 [[package]]
@@ -619,6 +612,13 @@ name = "wasm-bindgen-shared"
 version = "0.2.78"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "0237232789cf037d5480773fe568aac745bfe2afbc11a863e97901780a6b47cc"
+
+[[package]]
+name = "watchmaker_vm"
+version = "1.0.0"
+dependencies = [
+ "half",
+]
 
 [[package]]
 name = "web-sys"

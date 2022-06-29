@@ -1,5 +1,5 @@
 use crate::common::*;
-use clockwork::*;
+use watchmaker_vm::*;
 
 #[test]
 fn idmov_can_convert_from_input_to_output() {

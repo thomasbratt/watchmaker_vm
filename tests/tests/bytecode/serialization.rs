@@ -1,5 +1,5 @@
 use crate::common::*;
-use clockwork::*;
+use watchmaker_vm::*;
 
 // Test serialization with some manually calculated bytecode values.
 
@@ -7,7 +7,7 @@ use clockwork::*;
 fn serialize_nop() {
     let instruction = Instruction::NOP();
 
-    let actual: u64 = clockwork::serialize(&instruction);
+    let actual: u64 = watchmaker_vm::serialize(&instruction);
     let expected = 0x0000_0000_0000_0000;
 
     check_equal_u64(actual, expected);
@@ -17,7 +17,7 @@ fn serialize_nop() {
 fn serialize_hlt() {
     let instruction = Instruction::HLT();
 
-    let actual: u64 = clockwork::serialize(&instruction);
+    let actual: u64 = watchmaker_vm::serialize(&instruction);
     let expected = 0x0200_0000_0000_0000;
 
     check_equal_u64(actual, expected);
@@ -27,7 +27,7 @@ fn serialize_hlt() {
 fn serialize_syn() {
     let instruction = Instruction::SYN();
 
-    let actual: u64 = clockwork::serialize(&instruction);
+    let actual: u64 = watchmaker_vm::serialize(&instruction);
     let expected = 0x0400_0000_0000_0000;
 
     check_equal_u64(actual, expected);
@@ -40,7 +40,7 @@ fn serialize_syn() {
 //         RightInteger::State(2, Mode::Direct),
 //     );
 //
-//     let actual: u64 = clockwork::serialize(&instruction);
+//     let actual: u64 = watchmaker_vm::serialize(&instruction);
 //     let expected: u64 = make_quad(
 //         3,
 //         make_u16(MODE_VALUE_DIRECT, MODE_OFFSET) | make_u16(1, INDEX_OFFSET),
@@ -58,7 +58,7 @@ fn serialize_syn() {
 //         RightInteger::State(2, Mode::Indirect),
 //     );
 //
-//     let actual: u64 = clockwork::serialize(&instruction);
+//     let actual: u64 = watchmaker_vm::serialize(&instruction);
 //     let expected: u64 = make_quad(
 //         3,
 //         make_u16(MODE_VALUE_INDIRECT, MODE_OFFSET) | make_u16(1, INDEX_OFFSET),
@@ -76,7 +76,7 @@ fn serialize_syn() {
 //         RightInteger::State(INDEX_MAX, Mode::Direct),
 //     );
 //
-//     let actual: u64 = clockwork::serialize(&instruction);
+//     let actual: u64 = watchmaker_vm::serialize(&instruction);
 //     let expected: u64 = make_quad(
 //         3,
 //         make_u16(MODE_VALUE_DIRECT, MODE_OFFSET) | make_u16(INDEX_MAX, INDEX_OFFSET),
@@ -94,7 +94,7 @@ fn serialize_syn() {
 //         RightInteger::State(INDEX_MAX, Mode::Indirect),
 //     );
 //
-//     let actual: u64 = clockwork::serialize(&instruction);
+//     let actual: u64 = watchmaker_vm::serialize(&instruction);
 //     let expected: u64 = make_quad(
 //         3,
 //         make_u16(MODE_VALUE_INDIRECT, MODE_OFFSET) | make_u16(INDEX_MAX, INDEX_OFFSET),

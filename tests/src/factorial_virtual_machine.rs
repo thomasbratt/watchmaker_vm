@@ -1,4 +1,4 @@
-use clockwork::*;
+use watchmaker_vm::*;
 
 pub fn create_factorial_virtual_machine() -> VirtualMachine {
     VirtualMachine::new(

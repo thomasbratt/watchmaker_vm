@@ -1,7 +1,7 @@
 // Test creation and execution of the virtual machine.
 
 use crate::common::make_test_architecture;
-use clockwork::{CodeOffset, Instruction, LeftDouble, Mode, VirtualMachine};
+use watchmaker_vm::{CodeOffset, Instruction, LeftDouble, Mode, VirtualMachine};
 
 #[test]
 fn djeq_can_jump_forward_on_match() {
