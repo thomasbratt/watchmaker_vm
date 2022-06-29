@@ -503,7 +503,7 @@ dependencies = [
 
 [[package]]
 name = "tests"
-version = "1.0.0"
+version = "1.0.1"
 dependencies = [
  "criterion",
  "half",
@@ -615,7 +615,7 @@ checksum = "0237232789cf037d5480773fe568aac745bfe2afbc11a863e97901780a6b47cc"
 
 [[package]]
 name = "watchmaker_vm"
-version = "1.0.0"
+version = "1.0.1"
 dependencies = [
  "half",
 ]
