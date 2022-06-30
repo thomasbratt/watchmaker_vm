@@ -12,21 +12,20 @@ evolve needless complexity around register usage.
 ## Features
 
 * Suitable for Genetic Algorithms.  Any random sequence of bytes is a valid program.
-* Simple instruction format. Each instruction is a 64 bit value, including operands.
+* Simple orthogonal instruction format. Each instruction is a 64 bit value, including operands.
 * Fairly efficient, with a lower branching factor per instruction than architectures that
 include registers or require processing expression trees.
-* Utilities for dumping instructions.
+* Utilities for dumping instructions and serializing to and from 64-bit values.
 * Flexible memory mapped I/O.
 
 ## Usage
 
-* Install Rust using rustup <https://rustup.rs/>
-* Clone the repository (see below)
-* Run `cargo test` or `cargo build`
+* Add the following line to your Cargo.toml file:
+`watchmaker_vm = "1.0.1"`
 
-## Example
+## Examples
 
-The following creates an example that executes a factorial function.
+The following creates a virtual machine that executes a factorial function.
 ```rust
     let vm = VirtualMachine::new(
         &ArchitectureBuilder::default()
@@ -87,7 +86,7 @@ The following creates an example that executes a factorial function.
     println!("factorial of {:?} is {:?}", vm.iinput()[0], result);
 ```
 
-The following shows how to create a random list of instructions that can be supplied to a virtual machine instance.
+The following shows how to create a random program that can be supplied to a virtual machine instance.
 
 ```rust
         let raw: Vec<u64> = (0..GENOME_SIZE)
@@ -98,6 +97,97 @@ The following shows how to create a random list of instructions that can be supp
             .map(watchmaker_vm::deserialize)
             .collect();
 ```
+
+## Bytecode
+
+```code
+
+<7 bits>|<---- 19 bits ---->|<---- 19 bits ---->|<---- 19 bits ---->|
++-------+-------------------+-------------------+-------------------+
+|opcode |    operand 1      |    operand 2      |    operand 3      |
++-------+-------------------+-------------------+-------------------+
+
+19 bit operand:
+   1-bit is_address
+   1-bit is_indirect
+   1-bit is_state
+  16-bit value
+
+value is one of:
+  16-bit signed integer instruction offset
+  16-bit integer constant
+  16-bit floating point constant
+  16 bit integer memory address
+  16 bit integer indirect memory address (state register at this location holds actual address)
+
+```
+
+## Instructions
+
+```code
+Instructions
+--------------------------------------------------------------------------------
+
+All instructions given in the format:
+
+    mnemonic [operand1] [operand2] [->] [operand3]  [# comment]
+
+# no operands required
+NOP                                 # no operation
+HLT                                 # sync and stop
+SYN                                 # sync input and output register arrays with outside environment
+
+IIMOV lint rint                     # Copy the value of lint to rint.
+IDMOV lint rdouble                  # Copy the value of lint to rdouble, converting type.
+DIMOV ldouble rint                  # Copy the value of ldouble to rint, converting type.
+DDMOV ldouble rdouble               # Copy the value of ldouble to rdouble.
+
+IADD lint lint rint                 # lint + lint           -> rint
+IDIV lint lint rint                 # lint / lint           -> rint, divide by zero results in zero
+IMOD lint lint rint                 # lint % lint           -> rint
+IMUL lint lint rint                 # lint * lint           -> rint
+ISUB lint lint rint                 # lint - lint           -> rint
+
+DADD ldouble ldouble rdouble        # lint + lint           -> rint
+DDIV ldouble ldouble rdouble        # lint / lint           -> rint, divide by zero results in zero
+DMOD ldouble ldouble rdouble        # lint % lint           -> rint
+DMUL ldouble ldouble rdouble        # lint * lint           -> rint
+DSUB ldouble ldouble rdouble        # lint - lint           -> rint
+
+# caddr must be a relative instruction offset
+IJEQ lint lint caddr                # if operand1 == operand2, jump to caddr
+IJNE lint lint caddr                # if operand1 != operand2, jump to caddr
+IJGT lint lint caddr                # if operand1 > operand2, jump to caddr
+IJLT lint lint caddr                # if operand1 < operand2, jump to caddr
+
+# caddr must be a relative instruction offset
+DJEQ ldouble ldouble caddr          # if operand1 == operand2, jump to caddr
+DJNE ldouble ldouble caddr          # if operand1 != operand2, jump to caddr
+DJGT ldouble ldouble caddr          # if operand1 > operand2, jump to caddr
+DJLT ldouble ldouble caddr          # if operand1 < operand2, jump to caddr
+
+```
+
+## Architecture
+
+```code
+II: linear array of integer input registers
+IS: linear array of integer state registers
+IO: linear array of integer output registers
+
+DI: linear array of double precision floating point input registers
+DS: linear array of double precision floating point state registers
+DO: linear array of double precision floating point output registers
+
+C: 64 bit instructions code stored in a linear array
+```
+
+All registers are initialized to zero at start up.
+The input registers can be written to at any time.
+The output registers can be read at any time.
+
+Operand addresses are evaluated modulo the size of the register array they refer to, to keep them within the
+allocated memory for that array.
 
 ## Alternatives
 
@@ -133,4 +223,3 @@ MIT permissive license. See LICENSE for full license details.
 ## Source Code Repository
 
 <https://github.com/thomasbratt/watchmaker_vm>
-
