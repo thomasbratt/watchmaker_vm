@@ -20,8 +20,12 @@ include registers or require processing expression trees.
 
 ## Usage
 
-* Add the following line to your Cargo.toml file:
-`watchmaker_vm = "1.0.1"`
+* Add the following line to your `Cargo.toml` file:
+```yaml
+[dependencies]
+watchmaker_vm = "1.0.1"
+```
+* Latest published version: https://crates.io/crates/watchmaker_vm
 
 ## Examples
 
